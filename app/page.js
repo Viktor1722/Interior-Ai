@@ -1,113 +1,258 @@
+"use client";
+import { useState } from "react";
 import Image from "next/image";
+import logo from "../public/logo.svg";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import Home1 from "../public/Home1.png";
+import { Input } from "@/components/ui/input";
 
 export default function Home() {
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [futureHomeImage, setFutureHomeImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedStyle, setSelectedStyle] = useState("");
+
+  const handleImageUpload = (e, imageSetter) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      imageSetter(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleDisplayFutureHome = () => {
+    if (selectedStyle === "Minimalistic" && uploadedImage) {
+      setIsLoading(true); // Start loading
+      setTimeout(() => {
+        // Set the future home image to the Home1 import
+        setFutureHomeImage(Home1.src); // Use the imported image's src
+        setIsLoading(false); // Stop loading after delay
+      }, 3000); // Delay of 3 seconds
+    }
+  };
+
+  const handleToggleImage = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setFutureHomeImage((currentImage) =>
+        currentImage === Home1.src ? Home2.src : Home1.src
+      );
+    }, 3000);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="bg-slate-100 flex min-h-screen flex-col items-center p-10">
+      <nav>
+        <div class=" flex flex-wrap items-center justify-between ">
+          <Image src={logo} width={120} className="mr-52" />
+
+          <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border  rounded-lg  md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 rounded md:bg-transparent text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light md:p-0  "
+                  aria-current="page"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3  text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="block py-2 px-3 text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                >
+                  Services
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class=" block py-2 px-3 text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                >
+                  Pricing
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class=" block py-2 px-3 text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </nav>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <section
+        id="blurry-card"
+        className=" mt-24 bg-cover bg-center bg-custom-name rounded-3xl p-4 md:p-8"
+      >
+        <div className="relative w-full max-w-screen-xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mr-[134px] flex flex-col items-center justify-center space-y-4">
+              <div className="border w-full md:w-[300px] h-[300px] border-solid border-custom-blue rounded">
+                {uploadedImage ? (
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded Image"
+                    className="h-full w-full object-cover rounded"
+                  />
+                ) : (
+                  <label
+                    htmlFor="file-upload-1"
+                    className="text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light cursor-pointer p-2 rounded-md flex justify-center items-center h-full"
+                  >
+                    Upload an image
+                    <input
+                      id="file-upload-1"
+                      type="file"
+                      className="hidden"
+                      onChange={(e) => handleImageUpload(e, setUploadedImage)}
+                    />
+                  </label>
+                )}
+              </div>
+              <br></br>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+              <div className="border w-full md:w-[300px] h-[300px] border-solid border-custom-blue rounded">
+                {futureHomeImage ? (
+                  <img
+                    src={futureHomeImage}
+                    alt="Future Home"
+                    className="h-full w-full object-cover rounded"
+                  />
+                ) : (
+                  <label
+                    htmlFor="file-upload-2"
+                    className="cursor-pointer text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light p-2 rounded-md flex justify-center items-center h-full"
+                  >
+                    Your future home
+                    <input id="file-upload-2" type="file" className="hidden" />
+                  </label>
+                )}
+              </div>
+            </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+            <div class="flex items-center justify-center  ml-16 mt-32 h-96 isolate aspect-video w-96 rounded-xl">
+              <div>
+                <h1 className="text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light mb-4 text-3xl max-w-72">
+                  Configure your future home
+                </h1>
+                <h1 className="text-white mb-14 text-lg max-w-72">
+                  We present you our Ai powered tool that will give the chance
+                  to configure your future home the way you like it
+                </h1>
+                <Select>
+                  <SelectTrigger className="w-[250px] border-solid bg-clip-text text-transparent bg-gradient-to-br from-gold-dark to-gold-light">
+                    <SelectValue placeholder="Select Style" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Styles</SelectLabel>
+                      <SelectItem value="Modern">Modern</SelectItem>
+                      <SelectItem value="Vintage">Vintage</SelectItem>
+                      <SelectItem value="Minimalistic">Minimalistic</SelectItem>
+                      <SelectItem value="Industrial">Industrial</SelectItem>
+                      <SelectItem value="Scandinavian">Scandinavian</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <br></br>
+                <br></br>
+                <Select>
+                  <SelectTrigger className="w-[250px] border-solid bg-clip-text text-transparent bg-gradient-to-br from-gold-dark to-gold-light">
+                    <SelectValue placeholder="Select a amount of Ai involved" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Ai involvement</SelectLabel>
+                      <SelectItem value="apple">Little</SelectItem>
+                      <SelectItem value="banana">Moderate</SelectItem>
+                      <SelectItem value="blueberry">Heavy</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <br></br>
+                <br></br>
+                <Select>
+                  <SelectTrigger className="w-[250px] border-solid bg-clip-text text-transparent bg-gradient-to-br from-gold-dark to-gold-light">
+                    <SelectValue placeholder="Number of generated images" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Number of images</SelectLabel>
+                      <SelectItem value="apple">1</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <br></br>
+                <br></br>
+                <Button
+                  onClick={handleToggleImage}
+                  className=" bg-transparent border-solid border text-transparent bg-clip-text bg-gradient-to-br from-gold-dark to-gold-light w-[250px]"
+                >
+                  Generate
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
+        <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+            © 2024{" "}
+            <a href="https://flowbite.com/" class="hover:underline">
+              VisualCapture™
+            </a>
+            . All Rights Reserved.
+          </span>
+          <ul class="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline me-4 md:me-6">
+                Licensing
+              </a>
+            </li>
+            <li>
+              <a href="#" class="hover:underline">
+                Contact
+              </a>
+            </li>
+          </ul>
+        </div>
+      </footer>
     </main>
   );
 }
